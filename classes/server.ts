@@ -29,7 +29,8 @@ export default class Server {
       console.log("Cliente conected");
       socket.conectarCliente(cliente,this.io);
       socket.configurarUsuario(cliente,this.io);
-      socket.disconect(cliente);
+      socket.obtenerUsuarios(cliente,this.io);
+      socket.disconect(cliente,this.io);
       socket.mensaje(cliente,this.io);
     });
 
