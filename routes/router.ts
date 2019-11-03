@@ -1,4 +1,5 @@
 import {Router, Request, Response} from 'express';
+import Server from '../classes/server';
 const router = Router();
 router.get('/mensajes', (req: Request, res: Response) => {
   res.json({
@@ -9,6 +10,10 @@ router.get('/mensajes', (req: Request, res: Response) => {
 router.post('/mensajes', (req: Request, res: Response) => {
   const body = req.body.cuerpo;
   const de = req.body.de;
+  
+  const payload = {  de, body }
+  const server = Server.instance;
+  server.io.emit('nuevo-mensaje',payload);
   res.json({
     ok: true,
     body,
@@ -19,6 +24,12 @@ router.post('/mensajes/:id', (req: Request, res: Response) => {
   const id = req.params.id;
   const body = req.body.cuerpo;
   const de = req.body.de;
+
+  const payload = {  de, body }
+  const server = Server.instance;
+
+  server.io.in(id).emit('mensaje-privado',payload);
+
   res.json({
     ok: true,
     body,
